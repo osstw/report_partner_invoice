@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+        <report id="action_report_partner_invoices"
+                model="res.partner"
+                string="invoices"
+                report_type="qweb-pdf"
+                name="report_partner_invoice.report_partner_invoice"
+                file="report_partner_invoice.report_partner_invoice"/>
+    </data>
+</openerp>
