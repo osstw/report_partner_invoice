@@ -8,8 +8,15 @@
             <field name="arch" type="xml">
                 <form>
                     <p>你可以在这里编辑你想要的界面。</p>
+                    <sheet>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </sheet>
                     <footer>
-                        <button type="object" name="action_ok" string="OK" class="oe_highlight"/>
+                        <button type="object" name="action_OK" string="OK" class="oe_highlight"/>
                         <button special="cancel" string="Cancel"/>
                     </footer>
                 </form>

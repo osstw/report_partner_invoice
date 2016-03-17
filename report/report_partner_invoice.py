@@ -7,10 +7,16 @@ class ReportPartnerInvoice(models.AbstractModel):
 
     @api.multi
     def render_html(self, data=None):
+        partner_id = data.get("partner_id", None)
+        if not partner_id:
+            return
+
+        partner = self.env["res.partner"].browse(partner_id)
+        invoices = self.env["account.invoice"].search([("partner_id", "=", partner_id),
+                                                       ("state", "=", "open")])
         docargs = {
-            'doc_ids': self.ids,
-            'doc_model': 'res.partner',
-            'docs': self.env['res.partner'].browse(self.ids),
-            'data': "this is my report",
+            'partner': partner,
+            "invoices": invoices
         }
-        return self.env['report'].render('report_partner_invoice.partner_invoice', values=docargs)
+
+        return self.env['report'].render('report_partner_invoice.report_partner_invoice_template', values=docargs)
