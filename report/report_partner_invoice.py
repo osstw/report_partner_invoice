@@ -14,9 +14,11 @@ class ReportPartnerInvoice(models.AbstractModel):
         partner = self.env["res.partner"].browse(partner_id)
         invoices = self.env["account.invoice"].search([("partner_id", "=", partner_id),
                                                        ("state", "=", "open")])
+        amount_total = sum(inv.amount_total for inv in invoices)
         docargs = {
-            'partner': partner,
-            "invoices": invoices
+            "partner": partner,
+            "invoices": invoices,
+            "amount_total": amount_total
         }
 
         return self.env['report'].render('report_partner_invoice.report_partner_invoice_template', values=docargs)

@@ -4,24 +4,29 @@
         <template id="report_partner_invoice_template">
             <t t-call="report.html_container">
                 <t t-call="report.external_layout">
-                    <span>
-                        partner.name:
-                        <t t-esc="partner.name"/>
-                    </span>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="invoices" t-as="invoice">
+                    <div class="page">
+                        <h1>客户对账单</h1>
+                        <span>
+                            partner.name:
+                            <t t-esc="partner.name"/>
+                        </span>
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td><t t-esc="invoice.number"/></td>
+                                    <th>Number</th>
                                 </tr>
-                            </t>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="invoices" t-as="invoice">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="invoice.number"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
                 </t>
             </t>
         </template>
