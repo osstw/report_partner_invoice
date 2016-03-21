@@ -14,11 +14,15 @@ class ReportPartnerInvoice(models.AbstractModel):
         partner = self.env["res.partner"].browse(partner_id)
         invoices = self.env["account.invoice"].search([("partner_id", "=", partner_id),
                                                        ("state", "=", "open")])
-        amount_total = sum(inv.amount_total for inv in invoices)
+        amount_payable = int(round(sum(inv.amount_total for inv in invoices), 0))
+        residual_total = int(round(sum(inv1.residual for inv1 in invoices), 0))
+        balance_payable = int(round((amount_payable - residual_total), 0))
         docargs = {
             "partner": partner,
             "invoices": invoices,
-            "amount_total": amount_total
+            "amount_total": amount_payable,
+            "residual_total": residual_total,
+            "balance_payable": balance_payable,
         }
 
         return self.env['report'].render('report_partner_invoice.report_partner_invoice_template', values=docargs)
