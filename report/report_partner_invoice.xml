@@ -6,6 +6,7 @@
                 string="invoices"
                 report_type="qweb-pdf"
                 name="report_partner_invoice.report_partner_invoice"
-                file="report_partner_invoice.report_partner_invoice"/>
+                file="report_partner_invoice.report_partner_invoice"
+                menu="False"/>
     </data>
 </openerp>

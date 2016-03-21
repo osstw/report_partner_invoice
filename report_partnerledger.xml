@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<t t-name="account_report_partner_ledger.report_partnerledger">
+    <t t-call="report.html_container">
+
+        <div class="header">
+            <div class="row">
+                <div class="col-xs-3"/>
+                <div class="col-xs-6">
+                    <h2 style="text-align:center;">客戶/供應商對帳單</h2>
+                </div>
+                <div class="col-xs-push-3 pull-right">
+                    <ul class="list-inline">
+                        <li>
+                            <span style="font-size:16px;">頁數:</span>
+                        </li>
+                        <li>
+                            <span style="font-size:16px;" class="page"/>
+                        </li>
+                        <li>
+                            <span style="font-size:16px;">/</span>
+                        </li>
+                        <li>
+                            <span style="font-size:16px;" class="topage"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" style="font-size:18px">
+                <!--<div class="col-xs-3">
+                    <strong>Chart of Accounts:</strong>
+                    <p t-esc="get_account(data)"/>
+                </div>-->
+                <div class="col-xs-3">
+                    <strong>會計年度</strong>
+                    <p t-esc="get_fiscalyear(data)"/>
+                </div>
+                <div class="col-xs-3">
+                    <strong>目標分錄:</strong>
+                    <p t-esc="get_target_move(data)"/>
+                </div>
+
+                <div class="col-xs-3">
+                    <strong>篩選:</strong>
+                    <div>
+                        <span t-if="data['form']['filter'] == 'filter_no'">無篩選</span>
+                        <!--<span t-if="data['form']['filter'] == 'filter_period'">會計期間</span>
+                        <span t-if="data['form']['filter'] == 'filter_date'">篩選日期</span>-->
+                        <p t-if="data['form']['filter'] == 'filter_period'">
+                            開始期間:
+                            <span t-esc="get_start_period(data)"/>
+                            結束期間:
+                            <span t-esc="get_end_period(data)"/>
+                        </p>
+                        <p t-if="data['form']['filter'] == 'filter_date'">
+                            日期從 :
+                            <span t-esc="formatLang(get_start_date(data), date=True)"/>
+                            <br/>
+                            日期到 :
+                            <span t-esc="formatLang(get_end_date(data), date=True)"/>
+                        </p>
+                    </div>
+                </div>
+                <!--<div class="col-xs-3">
+                    <strong>Journals:</strong>
+                    <p t-esc="', '.join([ lt or '' for lt in get_journal(data) ])"/>
+                </div>-->
+                <div class="col-xs-3">
+                    <strong>業務夥伴</strong>
+                    <p t-esc="get_partners()"/>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="page" style="font-size:15px">
+            <table class="table table-condensed">
+                <thead>
+                    <tr style="font-size:16px">
+                        <th>序號</th>
+                        <th>日期</th>
+                        <th>類別</th>
+                        <th>單號</th>
+                        <!--<th>源單據</th>-->
+                        <!-- <th>科目</th>-->
+
+                        <th>借方</th>
+                        <th>貸方</th>
+                        <th>累計餘額</th>
+                        <!--<th t-if="amount_currency">Currency</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--<t t-foreach="docs" t-as="partner">-->
+
+                        <!--<tr style="font-size:17px;">-->
+                            <!--<td colspan="4">-->
+                                <!--<strong t-esc="partner.ref"/>-->
+                                <!-- -<strong t-esc="partner.name"/>(<strong t-esc="partner.ref_pcode"/>)-->
+                            <!--</td>-->
+
+                            <!--<td class="text-right">-->
+                                <!--<strong t-esc="sum_debit_partner(partner)"/>-->
+                            <!--</td>-->
+                            <!--<td class="text-right">-->
+                                <!--<strong t-esc="sum_credit_partner(partner)"/>-->
+                            <!--</td>-->
+                            <!--<td class="text-right">-->
+                                <!--<strong t-esc="formatLang(abs((sum_debit_partner(partner) - sum_credit_partner(partner))), currency_obj=res_company.currency_id)"/>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr t-if="initial_balance">-->
+                            <!--<td colspan="5">Initial Balance</td>-->
+                            <!--<td>-->
+                                <!--<span t-esc="formatLang(get_intial_balance(partner)[0][0])"/>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<span t-esc="formatLang(get_intial_balance(partner)[0][1])"/>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<span t-esc="formatLang(get_intial_balance(partner)[0][2], currency_obj=res_company.currency_id)"/>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr t-foreach="lines(partner)" t-as="line">-->
+                            <!--<td>-->
+                                <!--<span t-esc="line_index +1"/>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<span t-esc="formatLang(line['date'], date=True)"/>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<t t-if="line['code'] == 'SAJ'">銷售</t>-->
+                                <!--<t t-if="line['code'] == 'EXJ'">採購</t>-->
+                                <!--<t t-if="line['code'] == 'MISC'">雜項</t>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<span t-esc="line['move_name']"/>-->
+                            <!--</td>-->
+                            <!--&lt;!&ndash;<td>-->
+                                <!--<span t-esc="line['inv_origin']"/>-->
+                            <!--</td>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<td>-->
+                                <!--<span t-esc="line['a_code']"/>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<span t-esc="line['ref']"/>-<span t-esc="line['name']"/>-->
+                            <!--</td>&ndash;&gt;-->
+                            <!--<td class="text-right">-->
+                                <!--<span t-esc="formatLang(abs(line['debit']))"/>-->
+                            <!--</td>-->
+                            <!--<td class="text-right">-->
+                                <!--<span t-esc="formatLang(abs(line['credit']))"/>-->
+                            <!--</td>-->
+                            <!--<td class="text-right">-->
+                                <!--&lt;!&ndash;<span t-esc="formatLang(line['progress'], currency_obj=res_company.currency_id)"/>&ndash;&gt;-->
+                                <!--<span t-esc="formatLang(abs(line['progress']))"/>-->
+                            <!--</td>-->
+                            <!--<td t-if="amount_currency">-->
+                                <!--<span t-esc="formatLang(abs(line['amount_currency'])))"/>&amp;nbsp;-->
+                                <!--<span t-esc="line['currency_code']"/>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</t>-->
+                </tbody>
+            </table>
+        </div>
+        <div class="footer">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th>
+                                <strong style="font-size:16px;">協理:</strong>
+                            </th>
+                            <th>
+                                <strong style="font-size:16px;">採購:</strong>
+                            </th>
+                            <th>
+                                <strong style="font-size:16px;">覆核:</strong>
+                            </th>
+                            <th>
+                                <strong style="font-size:16px;">製單:</strong>
+                            </th>
+
+                        </tr>
+                    </table>
+                    <div class="pull-right">
+                        <div t-esc="datetime.date.today()"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </t>
+</t>
