@@ -3,31 +3,78 @@
     <data>
         <template id="report_partner_invoice_template">
             <t t-call="report.html_container">
-                <t t-call="report.external_layout">
-                    <div class="page">
-                        <h1>客户对账单</h1>
-                        <span>
-                            partner.name:
-                            <t t-esc="partner.name"/>
-                        </span>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Number</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="invoices" t-as="invoice">
-                                    <tr>
-                                        <td>
-                                            <t t-esc="invoice.number"/>
-                                        </td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
+                <div class="header">
+                   <div class="row">
+                        <div class="col-xs-6">
+                            <h2 style="text-align:center;">客戶/供應商對帳單</h2>
+                        </div>
+                        <div class="col-xs-push-3 pull-right">
+                            <ul class="list-inline">
+                                <li><span style="font-size:16px;">頁數:</span></li>
+                                <li><span style="font-size:16px;" class="page" /></li>
+                                <li><span style="font-size:16px;">/</span></li>
+                                <li><span style="font-size:16px;" class="topage" /></li>
+                            </ul>
+                        </div>
                     </div>
-                </t>
+                </div>
+                <div class="page" style="font-size:15px">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr style="font-size:16px">
+                                <th>序號</th>
+                                <th>日期</th>
+                                <th>類別</th>
+                                <th>單號</th>
+                                <th>應付帳款</th>
+                                <th>已沖帳款</th>
+                                <th>應付餘額</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="partner" t-as="partner">
+                                <tr style="font-size:17px;">
+                                    <td colspan="4">
+                                        <strong t-esc="partner.ref"/>
+                                        -<strong t-esc="partner.name"/>(<strong t-esc="partner.ref_pcode"/>)
+                                    </td>
+                                    <td class="text-right">
+                                        <strong t-esc="amount_payable"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong t-esc="residual_total"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong t-esc="balance_payable"/>
+                                    </td>
+                                </tr>
+                                <tr t-foreach="invoices" t-as="line">
+                                    <td><span t-esc="line_index +1" /></td>
+                                    <td>
+                                        <span t-esc="line['date_invoice']"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="line.journal_id.code == 'SAJ'">銷售</t>
+                                        <t t-if="line.journal_id.code == 'EXJ'">採購</t>
+                                        <t t-if="line.journal_id.code == 'MISC'">雜項</t>
+                                    </td>
+                                    <td>
+                                       <span t-esc="line.number"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="line.amount_total"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="line.residual"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="line.amount_total - line.residual"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
             </t>
         </template>
     </data>
